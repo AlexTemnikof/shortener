@@ -25,9 +25,9 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
     }
 
 
-    public String shortenUrl(final String url, final UUID clientUUID) {
+    public String shortenUrl(final String url, final Long limit, final UUID clientUUID) {
         final String shortCode = generateShortCode();
-        final ShortUrl shortUrlEntity = new ShortUrl(clientUUID, new Date(), shortCode, url);
+        final ShortUrl shortUrlEntity = new ShortUrl(clientUUID, new Date(), shortCode, url, limit, 0L);
         urlToShortUrlMap.put(shortCode, shortUrlEntity);
         return prefix + shortCode;
     }
@@ -39,6 +39,10 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
 
         final String shortCode = shortenUrl.substring(prefix.length());
         final ShortUrl shortUrl = urlToShortUrlMap.get(shortCode);
+        if (shortUrl.limit() > shortUrl.used()) {
+            throw new RuntimeException("the limit is over");
+        }
+        shortUrl.incrementUsed();
         return shortUrl.fullUrl();
     }
 

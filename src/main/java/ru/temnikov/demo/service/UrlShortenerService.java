@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface UrlShortenerService {
 
-    String shortenUrl(final String url, final UUID clientId);
+    String shortenUrl(final String url, final Long limit, final UUID clientId);
 
     String redirectRequest(final String shortenUrl);
 

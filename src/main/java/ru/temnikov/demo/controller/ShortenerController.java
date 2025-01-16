@@ -26,11 +26,11 @@ public class ShortenerController {
         this.urlShortenerService = urlShortenerService;
     }
 
-    @PostMapping("/{url}")
-    public String shortenUrl(HttpServletRequest request, @PathVariable final String url) {
+    @PostMapping("/{url}/{limit}")
+    public String shortenUrl(HttpServletRequest request, @PathVariable final String url, @PathVariable(required = false) Long limit) {
         final String clientIp = request.getHeader("X-Forwarded-For");
         final UUID clientUUID = clientService.createOrGetClient(clientIp);
-        return urlShortenerService.shortenUrl(url, clientUUID);
+        return urlShortenerService.shortenUrl(url, limit, clientUUID);
     }
 
     @GetMapping("/{shortUrl}")
