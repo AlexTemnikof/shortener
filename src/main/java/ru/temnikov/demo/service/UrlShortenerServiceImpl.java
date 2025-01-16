@@ -57,10 +57,10 @@ public class UrlShortenerServiceImpl implements UrlShortenerService {
     }
 
     /**
-     * Если на проде, то здесь узкое место, но для пет проекта с ин мемори норм
+     * Если на проде, то здесь узкое место, но для пет проекта с ин мемори
+     * Запускается ежедневно в 3 ночи
      */
-    @Scheduled
-    private void deleteOldLinks() {
+    @Scheduled(cron = "0 0 3 * * *")    private void deleteOldLinks() {
         long currentTime = System.currentTimeMillis();
         urlToShortUrlMap.entrySet().removeIf(entry ->
                 currentTime - entry.getValue().creationDate().getTime() > lifetime
